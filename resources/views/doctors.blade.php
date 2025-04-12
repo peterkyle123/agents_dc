@@ -171,14 +171,9 @@
               <div class="mb-4">
                   <label class="block text-gray-700 mb-1">Signature Option</label>
                   <div class="flex space-x-4">
-                      <button type="button" onclick="showSignatureInput()">Type Signature</button>
                        <button type="button" onclick="showDrawingCanvas()">Draw Signature</button>
                       <button type="button" onclick="showCameraInput()">Take Picture</button>
                   </div>
-              </div>
-              <div id="signatureInputContainer" class="hidden mb-4">
-                  <label class="block text-gray-700 mb-1">Enter Signature</label>
-                  <input type="text" id="signatureText" class="w-full border border-gray-300 p-2 rounded" placeholder="Enter Signature">
               </div>
             <div id="signatureCanvasContainer" class="hidden mb-4">
                 <canvas id="signatureCanvas" width="300" height="150" style="border: 1px solid #ccc;"></canvas>
@@ -209,7 +204,6 @@
               <div class="mb-4">
                   <label class="block text-gray-700 mb-1">Signature Option</label>
                   <div class="flex space-x-4">
-                      <button type="button" onclick="showSignatureInput()">Type Signature</button>
                        <button type="button" onclick="showDrawingCanvas()">Draw Signature</button>
                       <button type="button" onclick="showCameraInput()">Take Picture</button>
                   </div>
@@ -217,10 +211,6 @@
                 <canvas id="signatureCanvas" width="300" height="150" style="border: 1px solid #ccc;"></canvas>
                 <button type="button" onclick="clearSignatureCanvas()" class="mt-2 px-4 py-2 bg-gray-300 rounded">Clear</button>
             </div>
-              </div>
-              <div id="signatureInputContainer" class="hidden mb-4">
-                  <label class="block text-gray-700 mb-1">Enter Signature</label>
-                  <input type="text" id="signatureText" class="w-full border border-gray-300 p-2 rounded" placeholder="Enter Signature">
               </div>
 
               <div id="cameraInputContainer" class="hidden mb-4">
@@ -248,15 +238,9 @@
               <div class="mb-4">
                   <label class="block text-gray-700 mb-1">Signature Option</label>
                   <div class="flex space-x-4">
-                      <button type="button" onclick="showSignatureInput()">Type Signature</button>
                       <button type="button" onclick="showDrawingCanvas()">Draw Signature</button>
                       <button type="button" onclick="showCameraInput()">Take Picture</button>
                   </div>
-              </div>
-
-              <div id="signatureInputContainer" class="hidden mb-4">
-                  <label class="block text-gray-700 mb-1">Enter Signature</label>
-                  <input type="text" id="signatureText" class="w-full border border-gray-300 p-2 rounded" placeholder="Enter Signature">
               </div>
 
             <div id="signatureCanvasContainer" class="hidden mb-4">
