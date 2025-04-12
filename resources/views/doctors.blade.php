@@ -42,6 +42,56 @@
             max-h-[40vh] !important;
         }
     }
+    #inputModal.modal-open {
+        backdrop-filter: blur(5px); /* Adjust the blur radius as needed */
+        -webkit-backdrop-filter: blur(5px); /* For Safari */
+        background-color: rgba(0, 0, 0, 0.3); /* Optional: add a slight dark overlay for better contrast */
+    }
+
+    /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+    #modalContent::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+    }
+
+    /* Hide scrollbar for Firefox */
+    #modalContent {
+        scrollbar-width: none;
+        max-h-[60vh] !important; /* Use !important to override inline styles if any */
+        overflow-y: auto !important;
+    }
+
+    /* Optional: Adjust max height for smaller screens if needed */
+    @media (max-height: 640px) {
+        #modalContent {
+            max-h-[40vh] !important;
+        }
+    }
+
+    /* Full screen modal for mobile view (screens with a maximum width of 767px - typical mobile breakpoint) */
+    @media (max-width: 767px) {
+        #inputModal .bg-white {
+            width: 100vw; /* Take full viewport width */
+            height: 100vh; /* Take full viewport height */
+            max-width: none; /* Override any maximum width */
+            max-height: none; /* Override any maximum height */
+            border-radius: 0; /* Remove rounded corners for full screen */
+            padding: 1rem; /* Adjust padding as needed */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align content to the top */
+            align-items: stretch; /* Make content stretch within the modal */
+        }
+
+        #inputModal .bg-white #modalContent {
+            max-h: calc(100vh - 80px); /* Adjust max height for header and buttons (example value) */
+        }
+
+        #inputModal .bg-white .mt-6.flex.justify-end.space-x-4 {
+            margin-top: auto; /* Push buttons to the bottom */
+            padding-bottom: 1rem; /* Add some padding at the bottom */
+        }
+    }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
           integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
