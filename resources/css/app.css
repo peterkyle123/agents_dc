@@ -1,0 +1,118 @@
+@import 'tailwindcss';
+@import "tailwindcss";
+@source "../views";
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+/* Light mode styles (your existing Tailwind styles) */
+body {
+    background-color: #f3f4f6; /* bg-gray-100 equivalent */
+    color: #374151; /* text-gray-700 equivalent */
+}
+
+.max-w-6xl {
+    max-width: 72rem;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff; /* bg-white equivalent */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl equivalent */
+    border-radius: 0.5rem; /* rounded-2xl equivalent */
+    padding: 2rem; /* p-8 equivalent */
+}
+
+h2 {
+    font-size: 1.875rem; /* text-3xl equivalent */
+    font-weight: 700; /* font-bold equivalent */
+    color: #1e293b; /* text-gray-800 equivalent */
+}
+
+p {
+    color: #4b5563; /* text-gray-600 equivalent */
+    font-size: 0.875rem; /* text-sm equivalent */
+}
+
+/* ... other light mode styles ... */
+
+/* Dark mode styles */
+body.dark-mode {
+    background-color: #111827;
+    color: #d1d5db;
+}
+
+.dark-mode .max-w-6xl {
+    background-color: #1f2937;
+    box-shadow: none;
+    border-color: #4b5563;
+}
+
+.dark-mode h2 {
+    color: #f9fafb;
+}
+
+.dark-mode p {
+    color: #9ca3af;
+}
+
+/* Dark mode styles for the tables */
+.dark-mode .overflow-x-auto.border { /* Target the table container */
+    border-color: #4b5563; /* Dark border color */
+    box-shadow: none; /* Optionally remove shadow */
+}
+
+.dark-mode table {
+    color: #d1d5db; /* Dark text color for table content */
+}
+
+.dark-mode thead {
+    background-color: #374151; /* Dark background for table header */
+    color: #f9fafb; /* Light text color for table header */
+}
+
+.dark-mode thead th {
+    /* You might want to adjust padding or other header styles */
+}
+
+.dark-mode tbody {
+    background-color: #1f2937; /* Dark background for table body */
+}
+
+.dark-mode tbody tr {
+    border-bottom-color: #4b5563; /* Dark border for rows */
+}
+
+.dark-mode tbody tr:hover {
+    background-color: #374151; /* Darker hover effect */
+}
+
+.dark-mode tbody td {
+    /* You might want to adjust padding or other cell styles */
+}
+
+/* Dark mode styles for the modal (already included in the previous response) */
+.dark-mode #inputModal {
+    background-color: rgba(31, 41, 55, 0.8);
+}
+
+.dark-mode #inputModal .bg-white {
+    background-color: #374151 !important;
+    color: #f9fafb !important;
+}
+
+.dark-mode #inputModal h3 {
+    color: #f9fafb !important;
+}
+
+.dark-mode #inputModal button.bg-gray-300 {
+    background-color: #4b5563 !important;
+    color: #f9fafb !important;
+}
+
+.dark-mode #inputModal button.bg-blue-500 {
+    background-color: #3b82f6 !important;
+}
