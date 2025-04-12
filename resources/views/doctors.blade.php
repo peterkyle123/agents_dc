@@ -171,9 +171,14 @@
               <div class="mb-4">
                   <label class="block text-gray-700 mb-1">Signature Option</label>
                   <div class="flex space-x-4">
+                      <button type="button" onclick="showSignatureInput()">Type Signature</button>
                        <button type="button" onclick="showDrawingCanvas()">Draw Signature</button>
                       <button type="button" onclick="showCameraInput()">Take Picture</button>
                   </div>
+              </div>
+              <div id="signatureInputContainer" class="hidden mb-4">
+                  <label class="block text-gray-700 mb-1">Enter Signature</label>
+                  <input type="text" id="signatureText" class="w-full border border-gray-300 p-2 rounded" placeholder="Enter Signature">
               </div>
             <div id="signatureCanvasContainer" class="hidden mb-4">
                 <canvas id="signatureCanvas" width="300" height="150" style="border: 1px solid #ccc;"></canvas>
@@ -204,6 +209,7 @@
               <div class="mb-4">
                   <label class="block text-gray-700 mb-1">Signature Option</label>
                   <div class="flex space-x-4">
+                      <button type="button" onclick="showSignatureInput()">Type Signature</button>
                        <button type="button" onclick="showDrawingCanvas()">Draw Signature</button>
                       <button type="button" onclick="showCameraInput()">Take Picture</button>
                   </div>
@@ -211,6 +217,10 @@
                 <canvas id="signatureCanvas" width="300" height="150" style="border: 1px solid #ccc;"></canvas>
                 <button type="button" onclick="clearSignatureCanvas()" class="mt-2 px-4 py-2 bg-gray-300 rounded">Clear</button>
             </div>
+              </div>
+              <div id="signatureInputContainer" class="hidden mb-4">
+                  <label class="block text-gray-700 mb-1">Enter Signature</label>
+                  <input type="text" id="signatureText" class="w-full border border-gray-300 p-2 rounded" placeholder="Enter Signature">
               </div>
 
               <div id="cameraInputContainer" class="hidden mb-4">
@@ -238,15 +248,17 @@
               <div class="mb-4">
                   <label class="block text-gray-700 mb-1">Signature Option</label>
                   <div class="flex space-x-4">
+                      <button type="button" onclick="showSignatureInput()">Type Signature</button>
                       <button type="button" onclick="showDrawingCanvas()">Draw Signature</button>
                       <button type="button" onclick="showCameraInput()">Take Picture</button>
                   </div>
               </div>
 
-            <div id="signatureCanvasContainer" class="hidden mb-4">
-                <canvas id="signatureCanvas" width="300" height="150" style="border: 1px solid #ccc;"></canvas>
-                <button type="button" onclick="clearSignatureCanvas()" class="mt-2 px-4 py-2 bg-gray-300 rounded">Clear</button>
-            </div>
+              <div id="signatureInputContainer" class="hidden mb-4">
+                  <label class="block text-gray-700 mb-1">Enter Signature</label>
+                  <input type="text" id="signatureText" class="w-full border border-gray-300 p-2 rounded" placeholder="Enter Signature">
+              </div>
+
 
               <div id="cameraInputContainer" class="hidden mb-4">
                   <video id="camera-preview" autoplay></video>
@@ -337,7 +349,99 @@
       video.style.display = 'none';
       canvas.style.display = 'block';
   }
+  function showDrawingCanvas() {
+     document.getElementById('signatureInputContainer').classList.add('hidden');
+     document.getElementById('cameraInputContainer').classList.add('hidden');
+     document.getElementById('signatureCanvasContainer').classList.remove('hidden');
+     initializeDrawing();
+     stopCameraStream();
+ }
 
+ let isDrawing = false;
+ let lastX = 0;
+ let lastY = 0;
+ let signatureCanvasElement = null;
+ let signatureContext = null;
+
+ function initializeDrawing() {
+     signatureCanvasElement = document.getElementById('signatureCanvas');
+     signatureContext = signatureCanvasElement.getContext('2d');
+     signatureContext.lineWidth = 2;
+     signatureContext.lineJoin = 'round';
+     signatureContext.lineCap = 'round';
+     signatureContext.strokeStyle = '#000';
+
+     signatureCanvasElement.addEventListener('mousedown', (e) => {
+         isDrawing = true;
+         [lastX, lastY] = [e.offsetX, e.offsetY];
+     });
+
+     signatureCanvasElement.addEventListener('mousemove', draw);
+     signatureCanvasElement.addEventListener('mouseup', () => isDrawing = false);
+     signatureCanvasElement.addEventListener('mouseout', () => isDrawing = false);
+
+     // Touch events for mobile
+     signatureCanvasElement.addEventListener('touchstart', (e) => {
+         isDrawing = true;
+         [lastX, lastY] = [e.touches[0].clientX - signatureCanvasElement.offsetLeft, e.touches[0].clientY - signatureCanvasElement.offsetTop];
+         // Prevent scrolling while drawing
+         e.preventDefault();
+     }, { passive: false });
+
+     signatureCanvasElement.addEventListener('touchmove', (e) => {
+         draw(e);
+         // Prevent scrolling while drawing
+         e.preventDefault();
+     }, { passive: false });
+
+     signatureCanvasElement.addEventListener('touchend', () => isDrawing = false);
+     signatureCanvasElement.addEventListener('touchcancel', () => isDrawing = false);
+ }
+
+ function draw(e) {
+     if (!isDrawing) return;
+     signatureContext.beginPath();
+     signatureContext.moveTo(lastX, lastY);
+
+     if (e.type.startsWith('mouse')) {
+         [lastX, lastY] = [e.offsetX, e.offsetY];
+     } else if (e.type.startsWith('touch')) {
+         [lastX, lastY] = [e.touches[0].clientX - signatureCanvasElement.offsetLeft, e.touches[0].clientY - signatureCanvasElement.offsetTop];
+     }
+
+     signatureContext.lineTo(lastX, lastY);
+     signatureContext.stroke();
+ }
+
+ function clearSignatureCanvas() {
+     signatureContext.clearRect(0, 0, signatureCanvasElement.width, signatureCanvasElement.height);
+ }
+
+ function saveData() {
+     const signatureText = document.getElementById('signatureText')?.value;
+     const signatureCanvasElement = document.getElementById('signatureCanvas');
+     const capturedCanvas = document.getElementById('capturedCanvas');
+     let signatureData = null;
+
+     if (document.getElementById('signatureCanvasContainer').classList.contains('hidden')) {
+         if (signatureText) {
+             signatureData = signatureText;
+         } else if (capturedCanvas && capturedCanvas.getContext('2d').getImageData(0, 0, capturedCanvas.width, capturedCanvas.height).data.some(channel => channel !== 0)) {
+             signatureData = capturedCanvas.toDataURL('image/png');
+         }
+     } else {
+         signatureData = signatureCanvasElement.toDataURL('image/png');
+     }
+
+     if (currentSignatureCellId && signatureData) {
+         const cell = document.getElementById(currentSignatureCellId);
+         cell.innerHTML = '<img src="' + signatureData + '" alt="Signature" style="max-width: 100px; max-height: 50px;">';
+     }
+
+     closeModal();
+     currentSignatureCellId = null;
+     stopCameraStream();
+ }
   const darkModeToggle = document.getElementById('darkModeToggle');
   const body = document.querySelector('body');
   const moonIcon = document.getElementById('moonIcon');
