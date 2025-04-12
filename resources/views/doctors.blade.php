@@ -15,6 +15,33 @@
             border: 1px solid #ccc;
             margin-bottom: 10px;
         }
+
+          /* Style for the background overlay when the modal is visible */
+    #inputModal.modal-open {
+        backdrop-filter: blur(5px); /* Adjust the blur radius as needed */
+        -webkit-backdrop-filter: blur(5px); /* For Safari */
+        background-color: rgba(0, 0, 0, 0.3); /* Optional: add a slight dark overlay for better contrast */
+    }
+
+    /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+    #modalContent::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+    }
+
+    /* Hide scrollbar for Firefox */
+    #modalContent {
+        scrollbar-width: none;
+        max-h-[60vh] !important; /* Use !important to override inline styles if any */
+        overflow-y: auto !important;
+    }
+
+    /* Optional: Adjust max height for smaller screens if needed */
+    @media (max-height: 640px) {
+        #modalContent {
+            max-h-[40vh] !important;
+        }
+    }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
           integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
@@ -129,10 +156,10 @@
 </div>
 
 {{-- Modal for Input --}}
-<div id="inputModal" class="fixed inset-0 hidden flex items-center justify-center bg-gray-/100 bg-opacity-30 z-50 transition-opacity">
-    <div class="bg-white p-6 rounded shadow-xl w-96">
+<div id="inputModal" class="fixed inset-0 hidden flex items-center justify-center bg-gray-/100 bg-opacity-30 z-50 transition-opacity overflow-auto">
+    <div class="bg-white p-6 rounded shadow-xl w-full max-w-md md:max-w-lg lg:max-w-xl">
         <h3 id="modalTitle" class="text-xl font-semibold mb-4"></h3>
-        <div id="modalContent">
+        <div id="modalContent" class="max-h-[60vh] overflow-y-auto">
         </div>
         <div class="mt-6 flex justify-end space-x-4">
             <button onclick="closeModal()" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
@@ -140,12 +167,12 @@
         </div>
     </div>
 </div>
-
 <script>
     let currentSignatureCellId = null;
     let videoStream = null;
 
     function openModal(type, rowId) {
+
         const modal = document.getElementById('inputModal');
         const title = document.getElementById('modalTitle');
         const content = document.getElementById('modalContent');
@@ -255,12 +282,15 @@
 
         content.innerHTML = modalContentHtml;
         modal.classList.remove("hidden");
+     modal.classList.add("modal-open");
         // Initially show the drawing canvas
         showDrawingCanvas();
     }
 
     function closeModal() {
-        document.getElementById('inputModal').classList.add("hidden");
+        const modal = document.getElementById('inputModal');
+        modal.classList.add("hidden");
+        modal.classList.remove("modal-open"); // This line removes the class
         stopCameraStream();
     }
 
