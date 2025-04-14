@@ -40,6 +40,17 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+            'hash' => false,
+        ],
+
+        'agent' => [
+            'driver' => 'session',
+            'provider' => 'agents', // Add the 'agent' guard and link it to the 'agents' provider
+        ],
     ],
 
     /*
@@ -65,10 +76,10 @@ return [
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'agents' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Agent::class, // Define the 'agents' provider and point it to your Agent model
+        ],
     ],
 
     /*
