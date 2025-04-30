@@ -46,4 +46,54 @@ class DoctorController extends Controller
 
         return redirect()->route('agents.index')->with('success', 'Doctor added successfully!'); // Redirect as needed
     }
+    public function index()
+    {
+        $doctors = Doctor::all();
+        return view('docs-index', compact('doctors'));
+    }
+    public function edit($id)
+    {
+        $doctor = Doctor::findOrFail($id);
+        return view('docs-edit', compact('doctor'));
+    }
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'specialty' => 'nullable|string|max:255',
+        'address' => 'nullable|string',
+        'signature' => 'nullable|image|max:2048',
+    ]);
+
+    $doctor = Doctor::findOrFail($id);
+    $doctor->name = $request->name;
+    $doctor->specialty = $request->specialty;
+    $doctor->address = $request->address;
+
+    if ($request->hasFile('signature')) {
+        // Delete old image if exists
+        if ($doctor->signature && \Storage::exists($doctor->signature)) {
+            \Storage::delete($doctor->signature);
+        }
+
+        $path = $request->file('signature')->store('signatures', 'public');
+        $doctor->signature = $path;
+    }
+
+    $doctor->save();
+
+    return redirect()->route('doctors.index')->with('success', 'Doctor updated successfully.');
+}
+public function destroy($id)
+{
+    $doctor = Doctor::findOrFail($id);
+
+    if ($doctor->signature && \Storage::exists($doctor->signature)) {
+        \Storage::delete($doctor->signature);
+    }
+
+    $doctor->delete();
+
+    return redirect()->route('doctors.index')->with('success', 'Doctor deleted successfully.');
+}
 }

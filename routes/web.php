@@ -18,8 +18,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Dashboard route - now controlled by AuthController and potentially protected
 Route::get('/dashboard', [AuthController::class, 'showDashboard'])->name('dashboard');
-Route::get('/doctors', function () {
-    return view('doctors');
+Route::get('/agent-dr', function () {
+    return view('agent-dr');
 });
 // agents
 Route::get('/agents/create', [AgentController::class, 'create'])->name('agents.create');
@@ -54,7 +54,7 @@ Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctor
 Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
 
 // You'll likely want routes for listing, editing, and deleting doctors later
-// Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
-// Route::get('/doctors/{doctor}/edit', [DoctorController::class, 'edit'])->name('doctors.edit');
-// Route::put('/doctors/{doctor}', [DoctorController::class, 'update'])->name('doctors.update');
-// Route::delete('/doctors/{doctor}', [DoctorController::class, 'destroy'])->name('doctors.destroy');
+Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
+Route::get('/doctors/{doctor}/edit', [DoctorController::class, 'edit'])->name('doctors.edit');
+Route::put('/doctors/{doctor}', [DoctorController::class, 'update'])->name('doctors.update');
+Route::delete('/doctors/{doctor}', [DoctorController::class, 'destroy'])->name('doctors.destroy');
